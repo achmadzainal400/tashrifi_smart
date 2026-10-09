@@ -77,6 +77,33 @@
       margin-top: 0.2rem;
     }
 
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+    }
+    .header-account-cta {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.55rem 0.95rem;
+      border: 1px solid #d1fae5;
+      border-radius: 9999px;
+      background: #fff;
+      color: var(--primary-dark);
+      font: inherit;
+      font-size: 0.84rem;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .header-account-cta:hover { background: #ecfdf5; }
+    .header-account-cta:focus-visible { outline: 3px solid var(--accent-light); outline-offset: 2px; }
+
     .nav-tabs {
       display: flex;
       background: #ffffff;
@@ -1138,7 +1165,7 @@
     @media (min-width: 761px) and (max-width: 960px) {
       .nav-tabs {
         display: grid !important;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         overflow: visible !important;
       }
 
@@ -1171,7 +1198,7 @@
         inset: auto 0 0 !important;
         z-index: 1000 !important;
         display: grid !important;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 2px;
         width: 100% !important;
         height: calc(68px + env(safe-area-inset-bottom));
@@ -1502,8 +1529,78 @@
     }
 
   </style>
+  <link rel="stylesheet" href="./student-account.css?v=16">
 </head>
-<body>
+<body class="auth-locked">
+
+  <main id="auth-gate" class="auth-gate" aria-labelledby="auth-gate-title">
+    <div class="auth-gate-inner">
+      <section class="auth-gate-intro">
+        <div class="auth-gate-brand">
+          <img class="auth-gate-logo" src="./icon-192.png" alt="Ikon SMART TASHRIFIY">
+          <div>
+            <p class="auth-gate-school">MTs Plus Darul Falah Mojoagung</p>
+            <p class="auth-gate-name">SMART TASHRIFIY</p>
+          </div>
+        </div>
+        <div class="auth-gate-copy">
+          <p class="auth-gate-kicker">MEDIA PEMBELAJARAN SHOROF</p>
+          <h1 id="auth-gate-title">Belajar tashrif dengan lebih terarah.</h1>
+          <p>Materi Kelas VII–IX, muroja'ah, dan latihan dalam satu aplikasi. Masuk agar progres dan hasil latihanmu dapat dipantau guru.</p>
+        </div>
+      </section>
+
+      <section class="auth-gate-panel" aria-label="Pilihan akses murid">
+        <div id="auth-gate-choices">
+          <p class="auth-gate-panel-kicker">MULAI BELAJAR</p>
+          <h2>Pilih cara masuk</h2>
+          <p class="auth-gate-panel-copy">Gunakan akunmu atau buat akun murid baru.</p>
+          <div class="auth-gate-actions">
+            <button id="auth-gate-login" class="auth-gate-login" type="button">Masuk</button>
+            <button id="auth-gate-register" class="auth-gate-register" type="button">Daftar Murid</button>
+          </div>
+          <p class="auth-gate-footnote">Akun diperlukan untuk membuka materi, muroja'ah, dan latihan.</p>
+        </div>
+
+        <p id="account-message" class="account-message" role="status" aria-live="polite" hidden></p>
+        <div id="account-auth-view" hidden>
+          <div class="auth-gate-form-heading">
+            <h2 id="account-auth-title">Masuk ke akun murid</h2>
+            <p id="account-auth-description">Gunakan nama lengkap dan kata sandi yang terdaftar.</p>
+          </div>
+          <form id="account-auth-form" class="account-form">
+            <div id="account-name-field" class="account-field" hidden>
+              <label for="account-name-input">Nama lengkap</label>
+              <input id="account-name-input" name="fullName" type="text" minlength="2" maxlength="100" autocomplete="name" placeholder="Nama sesuai daftar kelas" disabled>
+            </div>
+            <div id="account-class-field" class="account-field" hidden>
+              <label for="account-class-input">Kelas</label>
+              <select id="account-class-input" name="className" disabled>
+                <option value="">Pilih kelas</option>
+                <option value="VII">Kelas VII</option>
+                <option value="VIII">Kelas VIII</option>
+                <option value="IX">Kelas IX</option>
+              </select>
+            </div>
+            <div class="account-field">
+              <label for="account-password-input">Kata sandi</label>
+              <input id="account-password-input" name="password" type="password" autocomplete="current-password" minlength="8" placeholder="Minimal 8 karakter" required disabled>
+            </div>
+            <div class="account-actions">
+              <button id="account-submit" class="account-primary" type="submit" disabled>Masuk</button>
+              <button id="account-mode-toggle" class="account-secondary" type="button" disabled>Belum punya akun? Daftar</button>
+            </div>
+          </form>
+          <button id="account-back-to-start" class="account-back" type="button">← Kembali ke pilihan</button>
+          <p class="account-footnote">Masuk dengan nama lengkap dan kata sandi. Pendaftaran memakai nama, kelas, dan kata sandi—tanpa email.</p>
+        </div>
+      </section>
+
+      <p class="auth-gate-footer">MTs Plus Darul Falah • Mojoagung</p>
+    </div>
+  </main>
+
+  <div id="app-shell" hidden>
 
   <header>
     <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.4rem; margin-bottom:0.4rem;">
@@ -1515,12 +1612,16 @@
       </div>
     </div>
   
-    <div style="margin-top: 0.5rem;">
-      <a id="btn-download-apk" href="#download-apk" onclick="downloadAndroidApp(event)" style="background:#f59e0b; color:#1e293b; text-decoration:none; border:none; padding:0.55rem 0.95rem; border-radius:9999px; font-size:0.82rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem; box-shadow: 0 2px 4px rgba(0,0,0,0.18);">
+    <div class="header-actions">
+       <button type="button" class="header-account-cta" onclick="window.TashrifiSmartAccount?.open('login')">
+        <span aria-hidden="true">👤</span>
+        <span>Akun Murid</span>
+       </button>
+       <a id="btn-download-apk" href="https://kzridyfnsuhdcypawoax.supabase.co/storage/v1/object/public/SmartTashrify/SmartTashrify.apk" onclick="downloadAndroidApp(event)" style="background:#f59e0b; color:#1e293b; text-decoration:none; border:none; padding:0.55rem 0.95rem; border-radius:9999px; font-size:0.82rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem; box-shadow: 0 2px 4px rgba(0,0,0,0.18);">
         <span>📲</span>
         <span>Download APK</span>
       </a>
-      <p id="apk-download-hint" style="margin:0.4rem 0 0; font-size:0.72rem; opacity:0.9;">Tautan unduhan akan aktif setelah file APK diunggah ke Supabase.</p>
+       <p id="apk-download-hint" style="margin:0.4rem 0 0; font-size:0.72rem; opacity:0.9;">APK tersedia untuk diunduh dan dipasang pada perangkat Android.</p>
     </div>
   </header>
 
@@ -1542,6 +1643,10 @@
     <button type="button" role="tab" aria-label="Panduan & Kurikulum" aria-selected="false" aria-controls="tab-about" tabindex="-1" class="nav-tab" id="tab-btn-about" onclick="switchMainTab('about', this)">
       <span aria-hidden="true">ℹ️</span>
       <span class="nav-label-full">Panduan & Kurikulum</span><span class="nav-label-short" aria-hidden="true">Panduan</span>
+    </button>
+    <button type="button" role="tab" aria-label="Akun Murid" aria-selected="false" aria-controls="tab-account" tabindex="-1" class="nav-tab" id="tab-btn-account" onclick="window.TashrifiSmartAccount?.open('login')">
+      <span aria-hidden="true">👤</span>
+      <span class="nav-label-full">Akun Murid</span><span class="nav-label-short" aria-hidden="true">Akun</span>
     </button>
   </div>
 
@@ -1672,6 +1777,7 @@
 
       <section class="learning-progress" aria-labelledby="learning-progress-title">
         <h3 class="progress-heading" id="learning-progress-title">Progres Belajar di Perangkat Ini</h3>
+        <p class="teacher-help">Riwayat perangkat tetap tersedia untuk muroja’ah. Jika akun murid tersambung, nilai akhir kuis juga tercatat di laporan guru.</p>
         <p class="teacher-help">Skor dan soal yang perlu diulang disimpan lokal di perangkat ini. Tidak perlu akun.</p>
         <div class="progress-summary">
           <div class="progress-stat"><strong id="progress-session-count">0</strong><span>Sesi selesai</span></div>
@@ -1781,6 +1887,47 @@
         </div>
       </section>
     </div>
+
+    <section id="tab-account" class="hidden" role="tabpanel" aria-labelledby="tab-btn-account" tabindex="0" aria-hidden="true">
+      <div class="account-panel">
+        <div class="account-heading">
+          <div>
+            <p class="account-eyebrow">Progres belajar tersimpan</p>
+            <h2>Akun murid</h2>
+            <p>Masuk agar guru dapat melihat sesi belajar dan hasil latihanmu.</p>
+          </div>
+          <span id="account-connection" class="account-connection" aria-live="polite">Memuat akun…</span>
+        </div>
+        <p id="account-member-message" class="account-message" role="status" aria-live="polite" hidden></p>
+        <div id="account-member-view" hidden>
+          <div class="account-member-row">
+            <div>
+              <p class="account-eyebrow">Akun aktif</p>
+              <h3 id="account-member-name"></h3>
+              <p id="account-member-class" class="account-muted"></p>
+            </div>
+            <button id="account-signout" class="account-secondary" type="button">Keluar</button>
+          </div>
+
+          <div id="account-student-tools">
+            <div class="account-sync-panel">
+              <span class="account-sync-mark" aria-hidden="true">✓</span>
+              <div>
+                <strong>Catatan belajar tersambung</strong>
+                <p class="account-muted">Sesi masuk, materi yang dibuka, durasi, dan hasil kuis dikirim ke laporan guru saat online.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="account-teacher-tools" hidden>
+            <p>Akun ini terdaftar sebagai guru.</p>
+            <a class="account-primary account-link" href="./monitor-guru/index.html">Buka pemantauan guru</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
 
   </div>
 
@@ -3016,6 +3163,9 @@ const appData = {
       if (tabName === 'murojaah') {
         renderMurojaah(currentMurojaahTopic);
       }
+
+      const activityLabel = targetBtn.querySelector('.nav-label-full')?.textContent.trim() || 'SMART TASHRIFIY';
+      window.TashrifiSmartAccount?.setActivity(`Membuka ${activityLabel}`);
     }
 
     function handleMainTabKeydown(event) {
@@ -3040,6 +3190,8 @@ const appData = {
       document.querySelectorAll('#grade-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
       if (btnElement) btnElement.classList.add('active');
       renderContent(grade);
+      const gradeLabel = grade === 'all' ? 'Semua tingkat' : `Materi Kelas ${grade === '7' ? 'VII' : grade === '8' ? 'VIII' : 'IX'}`;
+      window.TashrifiSmartAccount?.setActivity(gradeLabel);
     }
 
     let searchMatches = [];
@@ -3410,6 +3562,8 @@ const appData = {
       }
 
       displayMurojaahCards(murojaahDataset[topic] || []);
+      const topicLabels = { shighah: 'Shighah tashrif', bina: "7 macam bina'", dhomir: 'Isim dhomir', bab_mujarrad: 'Bab tsulatsi mujarrad', mazid_wazan: 'Wazan mazid', ilal_rules: "Kaidah I'lal" };
+      window.TashrifiSmartAccount?.setActivity(`Muroja'ah: ${topicLabels[topic] || 'Materi'}`);
     }
 
     function displayMurojaahCards(list) {
@@ -3512,6 +3666,8 @@ const appData = {
     let streak = 0;
     let answered = false;
     let sessionRecorded = false;
+    let quizStartedAt = 0;
+    let quizAnswerDetails = [];
     const LEARNING_PROGRESS_KEY = 'smart-tashrifiy-learning-progress-v1';
 
     function readLearningProgress() {
@@ -3701,6 +3857,7 @@ const appData = {
     }
 
     function restartQuiz(reviewQuestions = null) {
+      quizStartedAt = Date.now();
       let rawQuestions = [];
       if (reviewQuestions) {
         rawQuestions = reviewQuestions;
@@ -3738,6 +3895,7 @@ const appData = {
       streak = 0;
       answered = false;
       sessionRecorded = false;
+      quizAnswerDetails = [];
       document.getElementById('current-score').innerText = score;
       document.getElementById('current-streak').innerText = streak + ' 🔥';
       document.getElementById('quiz-result-box').style.display = 'none';
@@ -3807,6 +3965,15 @@ const appData = {
       }
 
       const isCorrect = i === q.correct;
+      quizAnswerDetails[qIdx] = {
+        badge: String(q.badge || '').slice(0, 100),
+        prompt: String(q.prompt || '').slice(0, 500),
+        arabic: String(q.arabic || '').slice(0, 240),
+        selected_answer: String(q.options[i] || '').slice(0, 240),
+        correct_answer: String(q.options[q.correct] || '').slice(0, 240),
+        is_correct: isCorrect,
+        explanation: String(q.explanation || '').slice(0, 600)
+      };
       saveQuestionOutcome(q, isCorrect);
       const materialLink = document.getElementById('feedback-material-link');
       const grade = getQuestionGrade(q);
@@ -3831,6 +3998,7 @@ const appData = {
       const rbox = document.getElementById('quiz-result-box');
       rbox.style.display = 'block';
       const maxScore = questions.length * 25;
+      window.TashrifiSmartAccount?.recordQuiz(quizModeLabel(currentMode), score, maxScore, Math.max(0, Math.round((Date.now() - quizStartedAt) / 1000)), currentMode, questions.length, quizAnswerDetails);
       document.getElementById('final-score-display').innerText = `${score} / ${maxScore}`;
       const evalP = document.getElementById('result-evaluation');
       const pct = (score / maxScore) * 100;
@@ -3895,16 +4063,23 @@ const appData = {
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    let studentApplicationInitialized = false;
+    window.initializeStudentApplication = function () {
+      if (studentApplicationInitialized) return;
+      studentApplicationInitialized = true;
       renderContent('all');
       renderMurojaah('shighah');
       updateTeacherTopics();
       renderTeacherReviewNotes();
       updateProgressPanel();
-      updateConnectionStatus();
       restartQuiz();
-    });
+    };
+
+    window.addEventListener('DOMContentLoaded', updateConnectionStatus);
 
 </script>
+<script defer src="./supabase-config.js?v=13"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="./student-account.js?v=18"></script>
 </body>
 </html>
